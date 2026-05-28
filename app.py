@@ -198,6 +198,7 @@ else:
 
         st.markdown("---")
         st.subheader("獲得率感度分析")
+        st.caption("獲得率ごとのDMG取扱可能件数 (単位: 物件数)")
         sens_rates = [5, 10, 15, 20, 30]
         sens_data = []
         for r_km in radius_options:
@@ -227,7 +228,7 @@ else:
             for col in rate_cols:
                 v = row[col]
                 style = cell_bg(v)
-                rows_html += f"<td style='{style};text-align:center;padding:6px 12px'>{v:.1f}</td>"
+                rows_html += f"<td style='{style};text-align:center;padding:6px 12px'>{v:.1f}件</td>"
             rows_html += "</tr>"
 
         header_html = "<tr style='background:#222;color:#fff'>"
