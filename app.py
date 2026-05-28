@@ -208,14 +208,40 @@ else:
             sens_data.append(row_d)
         sens_df = pd.DataFrame(sens_data)
         rate_cols = [f"{sr}%" for sr in sens_rates]
-        styled = (
-            sens_df.style
-            .background_gradient(subset=rate_cols, cmap="YlGn", vmin=0)
-            .format({col: "{:.1f}" for col in rate_cols})
-            .set_properties(**{"text-align": "center"})
-            .set_properties(subset=["半径(km)", "物件数"], **{"font-weight": "bold"})
-        )
-        st.dataframe(styled, hide_index=True, use_container_width=True)
+        # ヒートマップ: 最大値基準で緑の濃さを決める
+        max_val = sens_df[rate_cols].values.max() if len(sens_df) > 0 else 1
+
+        def cell_bg(val):
+            if max_val == 0:
+                return "background-color:#ffffff"
+            intensity = val / max_val
+            g = int(180 + (1 - intensity) * 75)
+            r = int(255 - intensity * 80)
+            return f"background-color:rgb({r},{g},180);color:#333"
+
+        rows_html = ""
+        for _, row in sens_df.iterrows():
+            rows_html += "<tr>"
+            rows_html += f"<td style='font-weight:bold;text-align:center;padding:6px 12px'>{int(row['半径(km)'])}</td>"
+            rows_html += f"<td style='font-weight:bold;text-align:center;padding:6px 12px'>{int(row['物件数'])}</td>"
+            for col in rate_cols:
+                v = row[col]
+                style = cell_bg(v)
+                rows_html += f"<td style='{style};text-align:center;padding:6px 12px'>{v:.1f}</td>"
+            rows_html += "</tr>"
+
+        header_html = "<tr style='background:#222;color:#fff'>"
+        for col in ["半径(km)", "物件数"] + rate_cols:
+            header_html += f"<th style='padding:8px 12px;text-align:center'>{col}</th>"
+        header_html += "</tr>"
+
+        html = f"""
+        <table style='border-collapse:collapse;width:100%;font-size:14px'>
+            <thead>{header_html}</thead>
+            <tbody>{rows_html}</tbody>
+        </table>
+        """
+        st.markdown(html, unsafe_allow_html=True)
 
     # ─── Detail table ───
     st.markdown("---")
