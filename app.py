@@ -189,7 +189,8 @@ else:
                 tooltip=row["物件名"],
             ).add_to(m)
 
-        st_folium(m, width=None, height=600, returned_objects=[])
+        map_key = f"{center_lat}_{center_lng}_{sorted(radius_options)}_{capture_rate}_{min_units}_{max_units}_{units_filter_apply}"
+        st_folium(m, width=None, height=600, key=map_key, returned_objects=[])
 
     with col_table:
         st.subheader("📋 半径別集計")
