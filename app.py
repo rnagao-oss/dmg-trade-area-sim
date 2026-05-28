@@ -206,7 +206,16 @@ else:
             for sr in sens_rates:
                 row_d[f"{sr}%"] = round(len(in_r) * sr / 100, 1)
             sens_data.append(row_d)
-        st.dataframe(pd.DataFrame(sens_data), hide_index=True, use_container_width=True)
+        sens_df = pd.DataFrame(sens_data)
+        rate_cols = [f"{sr}%" for sr in sens_rates]
+        styled = (
+            sens_df.style
+            .background_gradient(subset=rate_cols, cmap="YlGn", vmin=0)
+            .format({col: "{:.1f}" for col in rate_cols})
+            .set_properties(**{"text-align": "center"})
+            .set_properties(subset=["半径(km)", "物件数"], **{"font-weight": "bold"})
+        )
+        st.dataframe(styled, hide_index=True, use_container_width=True)
 
     # ─── Detail table ───
     st.markdown("---")
