@@ -92,7 +92,7 @@ with st.sidebar:
 
     st.markdown("---")
     st.subheader("📈 獲得率シナリオ")
-    capture_rate = st.slider("DMG獲得率 (%)", 0, 50, 10, step=1)
+    capture_rate = st.slider("DMG獲得率 (%)", 0, 20, 10, step=1)
 
     st.markdown("---")
     st.subheader("🔍 物件フィルター")
@@ -199,7 +199,7 @@ else:
         st.markdown("---")
         st.subheader("獲得率感度分析")
         st.caption("獲得率ごとのDMG取扱可能件数 (単位: 物件数)")
-        sens_rates = [5, 10, 15, 20, 30]
+        sens_rates = [5, 10, 15, 20]
         sens_data = []
         for r_km in radius_options:
             in_r = df_filtered[df_filtered["distance_km"] <= r_km]
