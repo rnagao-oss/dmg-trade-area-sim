@@ -52,7 +52,7 @@ def haversine_km(lat1, lng1, lat2, lng2):
     return 2 * R * math.asin(math.sqrt(a))
 
 # ─── Title ───
-st.title("🗺️ DMG商圏シミュレーション")
+st.title("DMG商圏シミュレーション")
 st.caption("中心点・半径・獲得率を操作して、商圏内の物件獲得可能件数をシミュレート")
 
 # ─── Sidebar controls ───
@@ -109,7 +109,7 @@ if units_filter_apply:
     ]
 
 # ─── Summary cards ───
-st.subheader(f"📊 集計サマリ (中心点: {preset})")
+st.subheader(f"集計サマリ (中心点: {preset})")
 
 if not radius_options:
     st.warning("半径を1つ以上選択してください")
@@ -143,7 +143,7 @@ else:
     col_map, col_table = st.columns([3, 2])
 
     with col_map:
-        st.subheader("🗺️ マップ表示")
+        st.subheader("マップ表示")
         m = folium.Map(location=[center_lat, center_lng], zoom_start=11, tiles="OpenStreetMap")
 
         # Center marker
@@ -193,11 +193,11 @@ else:
         st_folium(m, width=None, height=600, key=map_key, returned_objects=[])
 
     with col_table:
-        st.subheader("📋 半径別集計")
+        st.subheader("半径別集計")
         st.dataframe(pd.DataFrame(summary_data), hide_index=True, use_container_width=True)
 
         st.markdown("---")
-        st.subheader("📈 獲得率センシ")
+        st.subheader("獲得率感度分析")
         sens_rates = [5, 10, 15, 20, 30]
         sens_data = []
         for r_km in radius_options:
@@ -210,7 +210,7 @@ else:
 
     # ─── Detail table ───
     st.markdown("---")
-    st.subheader("🔍 圏内物件詳細")
+    st.subheader("圏内物件詳細")
 
     max_radius = max(radius_options) if radius_options else 20
     selected_radius = st.selectbox(
